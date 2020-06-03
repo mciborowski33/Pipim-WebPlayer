@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>WebPlayer</title>
+
+        <script src="https://cdn.jsdelivr.net/npm/hls.js@latest" charset="utf-8"></script>
+        <script src="scripts/main.js"></script>
+        <link rel="stylesheet" href="styles/global.css">
+
+    </head>
+    <body>
+
+        <video id="video"></video>
+        <button type="button" name="button" id="playBtn">Play!</button>
+        <button type="button" name="button" id="pauseBtn">Pause!</button>
+
+        <div id="metadata">
+            <b>Video details:</b>
+            <ul>
+                <li>Bitrate: <span id="bitrate"></span></li>
+                <li>Height: <span id="vidHeight"></span></li>
+                <li>Width: <span id="vidWidth"></span></li>
+                <li>Video codec: <span id="vidCodec"></span></li>
+                <li>Audio codec: <span id="audioCodec"></span></li>
+            </ul>
+        </div>
+
+    </body>
+</html>
