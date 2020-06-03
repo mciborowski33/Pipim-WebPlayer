@@ -5,15 +5,26 @@
         <title>WebPlayer</title>
 
         <script src="https://cdn.jsdelivr.net/npm/hls.js@latest" charset="utf-8"></script>
+        <script src="scripts/predefinedPlaylists.js" charset="utf-8"></script>
         <script src="scripts/main.js"></script>
         <link rel="stylesheet" href="styles/global.css">
 
     </head>
     <body>
 
+        <div id="playlistSelection">
+            <select id="selectPlaylist"></select>
+            <div>URL:
+                <input type="text" id="customURL"/>
+                <button id="confirmURL">Confirm URL</button>
+            </div>
+        </div>
+
         <video id="video"></video>
         <button type="button" name="button" id="playBtn">Play!</button>
         <button type="button" name="button" id="pauseBtn">Pause!</button>
+
+        <div id="qualitySelect"></div>
 
         <div id="metadata">
             <b>Video details:</b>

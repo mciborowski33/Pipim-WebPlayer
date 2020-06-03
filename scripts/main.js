@@ -1,7 +1,26 @@
 window.onload = function(){
 
+    let selectPlaylist = document.getElementById("selectPlaylist");
+    for( i = 0; i < playlists.length; i++ ){
+        var opt = document.createElement('option');
+        opt.value = i;
+        opt.innerHTML = playlists[i];
+        selectPlaylist.appendChild(opt);
+    }
+
     var video = document.getElementById('video');
-    var videoSrc = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
+    //var videoSrc = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
+    let videoSrc = playlists[0];
+
+    selectPlaylist.addEventListener('change', function(){
+        console.log("Change playlist");
+        video.pause();
+        console.log(playlists[selectPlaylist.value]);
+        hls.loadSource(playlists[selectPlaylist.value]);
+        hls.attachMedia(video);
+        video.load();
+    })
+
     if (Hls.isSupported()) {
       var hls = new Hls();
       hls.loadSource(videoSrc);
@@ -11,6 +30,11 @@ window.onload = function(){
         console.log("Events manifest parsed");
         console.log(hls.levels);
       });
+    hls.on(Hls.Events.LEVEL_SWITCHED, function(){
+      console.log(hls.levels[hls.currentLevel]);
+      refreshVideoDetails(hls.levels[hls.currentLevel])
+      refreshQualitySelect(hls.levels, hls);
+    })
     }
     // hls.js is not supported on platforms that do not have Media Source
     // Extensions (MSE) enabled.
@@ -37,6 +61,7 @@ window.onload = function(){
     playButton.addEventListener('click', function(){
         video.play();
         console.log(hls.currentLevel);
+        //refreshVideoDetails(hls.levels[hls.currentLevel])
     })
     var pauseButton = document.getElementById('pauseBtn');
     pauseButton.addEventListener('click', function(){
@@ -45,6 +70,37 @@ window.onload = function(){
 
 }
 
-refreshVideoDetails(hls){
+refreshVideoDetails = function(data){
     let bitrate = document.getElementById("bitrate");
+    let vidHeight = document.getElementById("vidHeight");
+    let vidWidth = document.getElementById("vidWidth");
+    let vidCodec = document.getElementById("vidCodec");
+    let audioCodec = document.getElementById("audioCodec");
+    bitrate.innerHTML = data.bitrate;
+    vidHeight.innerHTML = data.height;
+    vidWidth.innerHTML = data.width;
+    vidCodec.innerHTML = data.videoCodec;
+    audioCodec.innerHTML = data.audioCodec;
+}
+
+refreshQualitySelect = function(data, hls){
+    console.log("Buttons generating");
+    console.log(data);
+    //console.log(data[0].width);
+    let qualitySelect = document.getElementById("qualitySelect");
+    while (qualitySelect.firstChild) {
+        qualitySelect.removeChild(qualitySelect.lastChild);
+    }
+    for( i = 0; i < data.length; i++ ){
+        var qualityBtn = document.createElement('button');
+        qualityBtn.id = "btn_" + i;
+        let tmpStr = data[i].width + "x" + data[i].height + " (" + data[i].bitrate + ")";
+        console.log(tmpStr);
+        qualityBtn.innerHTML = tmpStr;
+        qualitySelect.appendChild(qualityBtn);
+        qualityBtn.addEventListener('click', function(){
+            let qualityLevel = this.id.split("_")[1];
+            hls.currentLevel = qualityLevel;
+        })
+    }
 }
