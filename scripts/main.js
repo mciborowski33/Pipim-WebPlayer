@@ -16,9 +16,13 @@ window.onload = function(){
         console.log("Change playlist");
         video.pause();
         console.log(playlists[selectPlaylist.value]);
+        hls.detachMedia(video);
         hls.loadSource(playlists[selectPlaylist.value]);
         hls.attachMedia(video);
+        //refreshVideoDetails(hls.levels[hls.currentLevel])
+        refreshQualitySelect(hls.levels, hls);
         video.load();
+        hls.recoverMediaError()
     })
 
     if (Hls.isSupported()) {
@@ -56,6 +60,19 @@ window.onload = function(){
         console.log("Metadata loaded");
       });
     }
+
+    var customURL = document.getElementById('customURL');
+    var confirmURL = document.getElementById("confirmURL");
+    confirmURL.addEventListener('click', function(){
+        console.log("Change playlist with button");
+        video.pause();
+        console.log(customURL.value);
+        hls.loadSource(customURL.value);
+        hls.attachMedia(video);
+        //refreshVideoDetails(hls.levels[hls.currentLevel])
+        refreshQualitySelect(hls.levels, hls);
+        video.load();
+    })
 
     var playButton = document.getElementById('playBtn');
     playButton.addEventListener('click', function(){

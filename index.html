@@ -11,31 +11,32 @@
 
     </head>
     <body>
+        <div id="container">
+            <div id="playlistSelection">
+                <select id="selectPlaylist"></select>
+                <div>URL:
+                    <input type="text" id="customURL"/>
+                    <button id="confirmURL">Confirm URL</button>
+                </div>
+            </div>
 
-        <div id="playlistSelection">
-            <select id="selectPlaylist"></select>
-            <div>URL:
-                <input type="text" id="customURL"/>
-                <button id="confirmURL">Confirm URL</button>
+            <video id="video"></video>
+            <div id="playControl">
+                <button type="button" name="button" id="playBtn">Play!</button>
+                <button type="button" name="button" id="pauseBtn">Pause!</button>
+            </div>
+            <div id="qualitySelect"></div>
+
+            <div id="metadata">
+                <b>Video details:</b>
+                <ul>
+                    <li>Bitrate: <span id="bitrate"></span></li>
+                    <li>Height: <span id="vidHeight"></span></li>
+                    <li>Width: <span id="vidWidth"></span></li>
+                    <li>Video codec: <span id="vidCodec"></span></li>
+                    <li>Audio codec: <span id="audioCodec"></span></li>
+                </ul>
             </div>
         </div>
-
-        <video id="video"></video>
-        <button type="button" name="button" id="playBtn">Play!</button>
-        <button type="button" name="button" id="pauseBtn">Pause!</button>
-
-        <div id="qualitySelect"></div>
-
-        <div id="metadata">
-            <b>Video details:</b>
-            <ul>
-                <li>Bitrate: <span id="bitrate"></span></li>
-                <li>Height: <span id="vidHeight"></span></li>
-                <li>Width: <span id="vidWidth"></span></li>
-                <li>Video codec: <span id="vidCodec"></span></li>
-                <li>Audio codec: <span id="audioCodec"></span></li>
-            </ul>
-        </div>
-
     </body>
 </html>
