@@ -11,78 +11,54 @@ window.onload = function(){
     var video = document.getElementById('video');
     //var videoSrc = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
     let videoSrc = playlists[0];
+    loadVideo(videoSrc);
 
     selectPlaylist.addEventListener('change', function(){
         console.log("Change playlist");
-        video.pause();
         console.log(playlists[selectPlaylist.value]);
-        hls.detachMedia(video);
-        hls.loadSource(playlists[selectPlaylist.value]);
-        hls.attachMedia(video);
-        //refreshVideoDetails(hls.levels[hls.currentLevel])
-        refreshQualitySelect(hls.levels, hls);
-        video.load();
-        hls.recoverMediaError()
+        loadVideo(playlists[selectPlaylist.value]);
     })
 
-    if (Hls.isSupported()) {
-      var hls = new Hls();
-      hls.loadSource(videoSrc);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, function() {
-        //video.play();
-        console.log("Events manifest parsed");
-        console.log(hls.levels);
-      });
-    hls.on(Hls.Events.LEVEL_SWITCHED, function(){
-      console.log(hls.levels[hls.currentLevel]);
-      refreshVideoDetails(hls.levels[hls.currentLevel])
-      refreshQualitySelect(hls.levels, hls);
-    })
-    }
-    // hls.js is not supported on platforms that do not have Media Source
-    // Extensions (MSE) enabled.
-    //
-    // When the browser has built-in HLS support (check using `canPlayType`),
-    // we can provide an HLS manifest (i.e. .m3u8 URL) directly to the video
-    // element through the `src` property. This is using the built-in support
-    // of the plain video element, without using hls.js.
-    //
-    // Note: it would be more normal to wait on the 'canplay' event below however
-    // on Safari (where you are most likely to find built-in HLS support) the
-    // video.src URL must be on the user-driven white-list before a 'canplay'
-    // event will be emitted; the last video event that can be reliably
-    // listened-for when the URL is not on the white-list is 'loadedmetadata'.
-    else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      video.src = videoSrc;
-      video.addEventListener('loadedmetadata', function() {
-        //video.play();
-        console.log("Metadata loaded");
-      });
+    function loadVideo(videoSrc) {
+        if (Hls.isSupported()) {
+            hls = new Hls();
+            hls.loadSource(videoSrc);
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                video.play();
+                refreshVideoDetails(hls.levels[hls.currentLevel])
+                refreshQualitySelect(hls.levels, hls);
+            });
+            hls.on(Hls.Events.LEVEL_SWITCHED, function(){
+                console.log(hls.levels[hls.currentLevel]);
+                refreshVideoDetails(hls.levels[hls.currentLevel])
+                refreshQualitySelect(hls.levels, hls);
+            })
+        }
+        else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = videoSrc;
+            video.addEventListener('loadedmetadata', function() {
+            video.play();
+            });
+        }
     }
 
     var customURL = document.getElementById('customURL');
     var confirmURL = document.getElementById("confirmURL");
     confirmURL.addEventListener('click', function(){
         console.log("Change playlist with button");
-        video.pause();
-        console.log(customURL.value);
-        hls.loadSource(customURL.value);
-        hls.attachMedia(video);
-        //refreshVideoDetails(hls.levels[hls.currentLevel])
-        refreshQualitySelect(hls.levels, hls);
-        video.load();
+        loadVideo(customURL.value);
     })
 
     var playButton = document.getElementById('playBtn');
     playButton.addEventListener('click', function(){
         video.play();
-        console.log(hls.currentLevel);
-        //refreshVideoDetails(hls.levels[hls.currentLevel])
+        console.log("Play");
     })
     var pauseButton = document.getElementById('pauseBtn');
     pauseButton.addEventListener('click', function(){
         video.pause();
+        console.log("Pause");
     })
 
 }
